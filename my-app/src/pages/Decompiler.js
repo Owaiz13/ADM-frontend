@@ -1,6 +1,6 @@
 // src/FileUpload.js
 import React, { useState } from 'react';
-import './Decompiler.css';
+//import './Decompiler.css';
 import FileUploadBar from '../components/FileUploadBar';
 import CheckboxWithContent from '../components/CheckboxWithContent';
 import Navbar from '../components/Navbar';
