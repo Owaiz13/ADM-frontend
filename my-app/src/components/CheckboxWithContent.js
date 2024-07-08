@@ -1,9 +1,8 @@
-// src/components/CheckboxWithContent.js
 import React from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { coy } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
-function CheckboxWithContent({ label, show, setShow, fileContent, language }) {
+function CheckboxWithContent({ label, show, setShow, fileContent, additionalContent, language }) {
   return (
     <div className="mb-3">
       <div className="form-check">
@@ -19,11 +18,19 @@ function CheckboxWithContent({ label, show, setShow, fileContent, language }) {
         </label>
       </div>
       {show && (
-        <div className=" border p-3 mt-2" style={{ maxHeight: '800px', overflowY: 'auto' }}>
+        <div className="border p-3 mt-2" style={{ maxHeight: '800px', overflowY: 'auto' }}>
           <h3>{label}</h3>
           <SyntaxHighlighter language={language} style={coy} showLineNumbers>
             {fileContent}
           </SyntaxHighlighter>
+          {label === 'Ghidra' && additionalContent && (
+            <>
+              <h3>{label} - Header (.h)</h3>
+              <SyntaxHighlighter language={language} style={coy} showLineNumbers>
+                {additionalContent}
+              </SyntaxHighlighter>
+            </>
+          )}
         </div>
       )}
     </div>

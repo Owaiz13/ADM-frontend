@@ -7,12 +7,13 @@ function Decompiler() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [showAngr, setShowAngr] = useState(false);
   const [showGhidra, setShowGhidra] = useState(false);
-  const [fileContent, setFileContent] = useState(''); 
+  const [fileContentC, setFileContentC] = useState(''); 
+  const [fileContentH, setFileContentH] = useState(''); // New state for .h content
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file);
-    console.log(selectedFile)
+    console.log(selectedFile);
   };
 
   const handleFileRequest = async () => {
@@ -27,25 +28,22 @@ function Decompiler() {
     }
 
     try {
-      // Create a FormData object to send the file
       const formData = new FormData();
       formData.append('sofile', selectedFile);
       formData.append('selections', JSON.stringify(checkbox));
-      console.log(formData)
+      console.log(formData);
 
-      // Send the request to the backend
-      // const response = await axios.post('BACKEND_URL', formData, {
-      //   headers: {
-      //     'Content-Type': 'multipart/form-data',
-      //   },
-      // });
+      // Simulating backend response
+      const fileUrlC = "file:///C:/Users/Ira%20Sheth/Downloads/main.cpp";
+      const fileUrlH = "file:///C:/Users/Ira%20Sheth/Downloads/main.h"; // URL for .h file
 
-      const fileUrl = "file:///C:/Users/Ira%20Sheth/Downloads/main.cpp"; // Adjust this based on your backend response structure
+      const fileResponseC = await axios.get(fileUrlC);
+      const fileResponseH = await axios.get(fileUrlH); // Fetch .h file content
+      console.log(fileResponseC.data);
+      console.log(fileResponseH.data);
 
-      // Fetch the file content from the received URL
-      const fileResponse = await axios.get(fileUrl);
-      console.log(fileResponse.data)
-      setFileContent(fileResponse.data);
+      setFileContentC(fileResponseC.data);
+      setFileContentH(fileResponseH.data); // Set .h content
 
     } catch (error) {
       console.error('Error fetching file:', error);
@@ -56,26 +54,24 @@ function Decompiler() {
     document.getElementById('fileInput').click();
   };
 
-  const handleFileUploadClick = () => {
-    handleFileUpload();
-  
-    handleFileRequest();
-    
-    // else{
-    //   console.log("No File Selected")
-    // }
-    
+  const handleSubmit = () => {
+    if (selectedFile) {
+      handleFileRequest();
+    } else {
+      console.log("No File Selected");
+    }
   };
 
   return (
     <div>
       <div className="container mt-4">
-        <h3>DECOMPILER</h3> {/* Added heading */}
+        <h3>DECOMPILER</h3>
         <FileUploadBar
           selectedFile={selectedFile}
           handleFileRequest={handleFileRequest}
-          handleFileUpload={handleFileUploadClick}
+          handleFileUpload={handleFileUpload}
           handleFileChange={handleFileChange}
+          handleSubmit={handleSubmit}
         />
         <div className="row">
           <div className="col-md-6">
@@ -83,7 +79,7 @@ function Decompiler() {
               label="Angr"
               show={showAngr}
               setShow={setShowAngr}
-              fileContent={fileContent}
+              fileContent={fileContentC}
               language="c" 
             />
           </div>
@@ -92,7 +88,8 @@ function Decompiler() {
               label="Ghidra"
               show={showGhidra}
               setShow={setShowGhidra}
-              fileContent={fileContent}
+              fileContent={fileContentC}
+              additionalContent={fileContentH} // Pass .h content
               language="c" 
             />
           </div>

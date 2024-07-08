@@ -1,7 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 
-function FileUploadBar({ selectedFile, handleFileChange, handleFileUpload }) {
+function FileUploadBar({ selectedFile, handleFileChange, handleFileUpload, handleSubmit }) {
   return (
     <div className="container d-flex justify-content-center my-3 mt-5">
       <div className="col-md-6 col-lg-6"> 
@@ -23,6 +23,9 @@ function FileUploadBar({ selectedFile, handleFileChange, handleFileUpload }) {
           />
           <button className="btn btn-dark" type="button" id="fileInputAddon" onClick={handleFileUpload}>
             Upload File
+          </button>
+          <button className="btn btn-success" type="button" onClick={handleSubmit}>
+            Submit
           </button>
         </div>
       </div>
